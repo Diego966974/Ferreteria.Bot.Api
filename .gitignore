@@ -1,0 +1,22 @@
+# Archivos de Visual Studio
+.vs/
+*.user
+*.suo
+
+# Compilados
+bin/
+obj/
+Debug/
+Release/
+
+# Paquetes
+*.nupkg
+*.snupkg
+packages/
+
+# Archivos de logs
+*.log
+
+# Archivos temporales
+*.tmp
+*.temp

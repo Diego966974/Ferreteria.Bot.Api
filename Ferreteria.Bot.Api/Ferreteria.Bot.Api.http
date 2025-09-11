@@ -1,0 +1,6 @@
+@Ferreteria.Bot.Api_HostAddress = http://localhost:5228
+
+GET {{Ferreteria.Bot.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

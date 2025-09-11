@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36429.23 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferreteria.Bot.Api", "Ferreteria.Bot.Api\Ferreteria.Bot.Api.csproj", "{F4FFD7F6-F568-469E-A56E-04DE27B02BCD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F4FFD7F6-F568-469E-A56E-04DE27B02BCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4FFD7F6-F568-469E-A56E-04DE27B02BCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4FFD7F6-F568-469E-A56E-04DE27B02BCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4FFD7F6-F568-469E-A56E-04DE27B02BCD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {83669854-98FB-45D4-8250-7E929BCF8240}
+	EndGlobalSection
+EndGlobal
