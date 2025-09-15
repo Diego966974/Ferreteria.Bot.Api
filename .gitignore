@@ -20,3 +20,4 @@ packages/
 # Archivos temporales
 *.tmp
 *.temp
+.venv/
