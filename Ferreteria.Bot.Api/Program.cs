@@ -1,12 +1,14 @@
-﻿using Ferreteria.Bot.Api.Data;   // 👈 importa tu carpeta Data donde está AppDbContext
+﻿using Ferreteria.Bot.Api.Data;   // DbContext
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// -----------------------------
+// Configuración de servicios
+// -----------------------------
 
-// 👇 Configuración del DbContext con MySQL
+// Configuración de DbContext con MySQL
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -14,22 +16,24 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     )
 );
 
-// 👇 Agregamos el cliente HTTP y nuestro servicio AI
-builder.Services.AddHttpClient();
-builder.Services.AddSingleton<AIService>(sp =>
-    new AIService(
-        sp.GetRequiredService<IHttpClientFactory>(),
-        builder.Configuration["OpenAI:ApiKey"]  // 🔑 Asegúrate de poner tu clave en appsettings.json
-    )
-);
+// Registro de AIClient para comunicarse con FastAPI
+builder.Services.AddHttpClient<AIClient>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:8000"); // URL donde corre FastAPI
+});
 
+// Controladores y Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// -----------------------------
+// Construcción de la app
+// -----------------------------
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Pipeline HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -37,10 +41,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
+
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Ferreteria.Bot.Api.Stores;
+using System.Threading.Tasks;
 
 namespace Ferreteria.Bot.Api.Controllers
 {
@@ -7,39 +8,36 @@ namespace Ferreteria.Bot.Api.Controllers
     [Route("api/[controller]")]
     public class BotController : ControllerBase
     {
-        [HttpPost("process")]
-        public IActionResult Process([FromBody] BotRequest request)
-        {
-            // Log inicial
-            Console.WriteLine($"[API] Mensaje recibido de {request.From}: {request.Message}");
+        private readonly AIClient _aiClient;
 
+        public BotController(AIClient aiClient)
+        {
+            _aiClient = aiClient;
+        }
+
+        [HttpPost("process")]
+        public async Task<IActionResult> Process([FromBody] BotRequest request)
+        {
             if (request == null || string.IsNullOrWhiteSpace(request.Message))
             {
                 return BadRequest(new { reply = "Mensaje vacío o inválido." });
             }
 
-            // Simulamos baja confianza
-            bool bajaConfianza = true;
+            // Llamada al servicio AI en Python
+            var aiResponse = await _aiClient.ProcessMessage(request.Message, request.From);
 
-            if (bajaConfianza)
+            if (aiResponse == null || string.IsNullOrWhiteSpace(aiResponse.Reply))
             {
-                // Guardamos en el mock de "handover"
+                // Mensaje no confiable → enviar a handover
                 HandoverStore.Handovers.Add(request);
-
-                Console.WriteLine($"[HANDOVER] Escalando mensaje de {request.From}: {request.Message}");
                 return Ok(new { reply = "Lo siento, no estoy seguro. Un humano te atenderá pronto." });
             }
 
-            // Respuesta normal
-            var response = new
-            {
-                reply = $"Hola {request.From}, recibí tu mensaje: {request.Message}"
-            };
-
-            return Ok(response);
+            // Respuesta confiable de AI
+            return Ok(new { reply = aiResponse.Reply });
         }
 
-        // Nuevo endpoint para ver los mensajes escalados
+        // Endpoint para ver los mensajes escalados
         [HttpGet("handovers")]
         public IActionResult GetHandovers()
         {
